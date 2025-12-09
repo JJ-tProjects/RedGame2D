@@ -4,14 +4,21 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Player")]
+    private Rigidbody2D rb;
+    public SpriteRenderer skin;
+    public Animator anim;
+
+    [Header("Configurações de Movimento")]
     public float speed = 5f;
     public float jumpForce = 10f;
+
+    [Header("Configurações de Chão")]
+    private bool isGrounded;
+    public float groundCheckRadius = 0.1f;
     public Transform groundCheck;
     public LayerMask groundLayer;
-    public SpriteRenderer Skin;
 
-    private Rigidbody2D rb;
-    private bool isGrounded;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -19,8 +26,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        // Verifica ch?o
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
         // Movimento
         float move = Input.GetAxis("Horizontal");
@@ -28,22 +34,33 @@ public class PlayerMovement : MonoBehaviour
 
         if (move > 0)
         {
-            Skin.flipX = false;
+            anim.Play("pRun", 0);
+            skin.flipX = false;
         }
         else if (move < 0)
         {
-            Skin.flipX = true;
+            anim.Play("pRun", 0);
+            skin.flipX = true;
         }
         else
         {
-
+            anim.Play("pIdle", 0);
         }
 
         // Pulo
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
+            anim.Play("pJump", 0);
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
+    }
 
+    private void OnDrawGizmosSelected()
+    {
+        if (groundCheck != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        }
     }
 }
