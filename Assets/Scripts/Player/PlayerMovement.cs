@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -34,23 +35,36 @@ public class PlayerMovement : MonoBehaviour
 
         if (move > 0)
         {
-            anim.Play("pRun", 0);
+            if (isGrounded)
+                anim.Play("pRun", 0);
+            
             skin.flipX = false;
         }
         else if (move < 0)
         {
-            anim.Play("pRun", 0);
+            if (isGrounded)
+                anim.Play("pRun", 0);
+
             skin.flipX = true;
         }
         else
         {
-            anim.Play("pIdle", 0);
+            if (isGrounded)
+                anim.Play("pIdle", 0);
+        }
+
+        if (rb.velocity.y >= 0 && !isGrounded)
+        {
+            anim.Play("pJump", 0);
+        }
+        if (rb.velocity.y < 0 && !isGrounded)
+        {
+            anim.Play("pFall", 0);
         }
 
         // Pulo
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
-            anim.Play("pJump", 0);
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
     }

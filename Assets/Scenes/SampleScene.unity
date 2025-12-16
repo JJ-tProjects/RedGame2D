@@ -242,14 +242,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c2cf7a84a845104f891e66c6a6268f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skin: {fileID: 1061633514}
+  anim: {fileID: 1061633515}
   speed: 5
   jumpForce: 10
-  groundCheck: {fileID: 1276328060}
   groundCheckRadius: 0.1
+  groundCheck: {fileID: 1276328060}
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  Skin: {fileID: 1061633514}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
